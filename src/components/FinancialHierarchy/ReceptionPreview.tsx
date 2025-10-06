@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { ReceptionExcelRow } from '../../utils/parseReceptionExcel'
-import { ChevronDown, ChevronRight, CreditCard as Edit2 } from 'lucide-react'
+import { ChevronDown, ChevronRight, Edit2, Copy } from 'lucide-react'
 
 interface ReceptionPreviewProps {
   data: ReceptionExcelRow[]
@@ -20,6 +20,7 @@ const PositionItem: React.FC<PositionItemProps> = ({ item, onUpdate, onNameUpdat
   const [editQuantity, setEditQuantity] = useState(item.quantity)
   const [editPrice, setEditPrice] = useState(item.price)
   const [editName, setEditName] = useState(item.itemName)
+  const [showCopyFeedback, setShowCopyFeedback] = useState(false)
 
   const total = item.quantity * item.price
   const isIncome = item.transactionType === 'Доходы'
@@ -72,6 +73,16 @@ const PositionItem: React.FC<PositionItemProps> = ({ item, onUpdate, onNameUpdat
     }
   }
 
+  const handleCopyName = async () => {
+    try {
+      await navigator.clipboard.writeText(item.itemName)
+      setShowCopyFeedback(true)
+      setTimeout(() => setShowCopyFeedback(false), 1500)
+    } catch (err) {
+      console.error('Failed to copy:', err)
+    }
+  }
+
   return (
     <div className="py-2 px-3 rounded hover:bg-gray-50 transition-colors">
       <div className="flex items-center justify-between gap-3">
@@ -91,15 +102,24 @@ const PositionItem: React.FC<PositionItemProps> = ({ item, onUpdate, onNameUpdat
               <p className="text-sm text-gray-900">
                 {item.itemName}
               </p>
-              {onUpdate && (
+              <div className="flex items-center gap-1">
+                {onUpdate && (
+                  <button
+                    onClick={() => setIsEditingName(true)}
+                    className="text-gray-400 hover:text-blue-600 transition flex-shrink-0"
+                    title="Редактировать"
+                  >
+                    <Edit2 size={14} />
+                  </button>
+                )}
                 <button
-                  onClick={() => setIsEditingName(true)}
-                  className="text-gray-400 hover:text-blue-600 transition flex-shrink-0"
-                  title="Редактировать"
+                  onClick={handleCopyName}
+                  className={`text-gray-400 hover:text-blue-600 transition flex-shrink-0 ${showCopyFeedback ? 'text-green-500' : ''}`}
+                  title={showCopyFeedback ? 'Скопировано!' : 'Копировать название'}
                 >
-                  <Edit2 size={14} />
+                  <Copy size={14} />
                 </button>
-              )}
+              </div>
             </>
           )}
         </div>
