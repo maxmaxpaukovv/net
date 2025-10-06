@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { ReceptionExcelRow } from '../../utils/parseReceptionExcel'
-import { ChevronDown, ChevronRight, Edit2, Copy } from 'lucide-react'
+import { ChevronDown, ChevronRight, CreditCard as Edit2, Copy } from 'lucide-react'
 
 interface ReceptionPreviewProps {
   data: ReceptionExcelRow[]
