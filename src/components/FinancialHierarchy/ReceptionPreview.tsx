@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { ReceptionExcelRow } from '../../utils/parseReceptionExcel'
-import { ChevronDown, ChevronRight } from 'lucide-react'
+import { ChevronDown, ChevronRight, Edit2 } from 'lucide-react'
 
 interface ReceptionPreviewProps {
   data: ReceptionExcelRow[]
@@ -87,32 +87,37 @@ const PositionItem: React.FC<PositionItemProps> = ({ item, onUpdate, onNameUpdat
               className="w-full px-2 py-1 text-sm text-gray-900 border border-blue-500 rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
             />
           ) : (
-            <p
-              className={`text-sm text-gray-900 ${onNameUpdate ? 'cursor-pointer hover:text-blue-600' : ''}`}
-              onClick={() => onNameUpdate && setIsEditingName(true)}
-            >
+            <p className="text-sm text-gray-900">
               {item.itemName}
             </p>
           )}
         </div>
-        <div className="text-right">
-          {isEditingQuantity && onUpdate ? (
-            <input
-              type="number"
-              value={editQuantity}
-              onChange={(e) => setEditQuantity(parseFloat(e.target.value) || 0)}
-              onBlur={handleQuantitySave}
-              onKeyDown={handleQuantityKeyDown}
-              autoFocus
-              className="w-16 px-2 py-1 text-sm text-right border border-blue-500 rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
-            />
-          ) : (
-            <p
-              className={`text-sm text-gray-600 font-medium ${onUpdate ? 'cursor-pointer hover:text-blue-600' : ''}`}
-              onClick={() => onUpdate && setIsEditingQuantity(true)}
+        <div className="flex items-center gap-3">
+          <div className="text-right">
+            {isEditingQuantity && onUpdate ? (
+              <input
+                type="number"
+                value={editQuantity}
+                onChange={(e) => setEditQuantity(parseFloat(e.target.value) || 0)}
+                onBlur={handleQuantitySave}
+                onKeyDown={handleQuantityKeyDown}
+                autoFocus
+                className="w-16 px-2 py-1 text-sm text-right border border-blue-500 rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
+              />
+            ) : (
+              <p className="text-sm text-gray-600 font-medium">
+                {item.quantity}
+              </p>
+            )}
+          </div>
+          {onUpdate && (
+            <button
+              onClick={() => setIsEditingName(true)}
+              className="text-gray-400 hover:text-blue-600 transition"
+              title="Редактировать"
             >
-              {item.quantity}
-            </p>
+              <Edit2 size={14} />
+            </button>
           )}
         </div>
       </div>
@@ -135,10 +140,7 @@ const PositionItem: React.FC<PositionItemProps> = ({ item, onUpdate, onNameUpdat
           />
         ) : (
           onUpdate && (
-            <span
-              className="text-xs text-gray-500 cursor-pointer hover:text-blue-600"
-              onClick={() => setIsEditingPrice(true)}
-            >
+            <span className="text-xs text-gray-500">
               {item.price.toLocaleString('ru-RU')} ₽/шт
             </span>
           )
