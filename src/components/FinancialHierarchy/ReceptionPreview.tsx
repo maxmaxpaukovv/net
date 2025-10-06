@@ -75,7 +75,7 @@ const PositionItem: React.FC<PositionItemProps> = ({ item, onUpdate, onNameUpdat
   return (
     <div className="py-2 px-3 rounded hover:bg-gray-50 transition-colors">
       <div className="flex items-center justify-between gap-3">
-        <div className="flex-1 min-w-0">
+        <div className="flex-1 min-w-0 flex items-center gap-2">
           {isEditingName && onNameUpdate ? (
             <input
               type="text"
@@ -84,40 +84,40 @@ const PositionItem: React.FC<PositionItemProps> = ({ item, onUpdate, onNameUpdat
               onBlur={handleNameSave}
               onKeyDown={handleNameKeyDown}
               autoFocus
-              className="w-full px-2 py-1 text-sm text-gray-900 border border-blue-500 rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
+              className="flex-1 px-2 py-1 text-sm text-gray-900 border border-blue-500 rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
             />
           ) : (
-            <p className="text-sm text-gray-900">
-              {item.itemName}
-            </p>
+            <>
+              <p className="text-sm text-gray-900">
+                {item.itemName}
+              </p>
+              {onUpdate && (
+                <button
+                  onClick={() => setIsEditingName(true)}
+                  className="text-gray-400 hover:text-blue-600 transition flex-shrink-0"
+                  title="Редактировать"
+                >
+                  <Edit2 size={14} />
+                </button>
+              )}
+            </>
           )}
         </div>
-        <div className="flex items-center gap-3">
-          <div className="text-right">
-            {isEditingQuantity && onUpdate ? (
-              <input
-                type="number"
-                value={editQuantity}
-                onChange={(e) => setEditQuantity(parseFloat(e.target.value) || 0)}
-                onBlur={handleQuantitySave}
-                onKeyDown={handleQuantityKeyDown}
-                autoFocus
-                className="w-16 px-2 py-1 text-sm text-right border border-blue-500 rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
-              />
-            ) : (
-              <p className="text-sm text-gray-600 font-medium">
-                {item.quantity}
-              </p>
-            )}
-          </div>
-          {onUpdate && (
-            <button
-              onClick={() => setIsEditingName(true)}
-              className="text-gray-400 hover:text-blue-600 transition"
-              title="Редактировать"
-            >
-              <Edit2 size={14} />
-            </button>
+        <div className="text-right">
+          {isEditingQuantity && onUpdate ? (
+            <input
+              type="number"
+              value={editQuantity}
+              onChange={(e) => setEditQuantity(parseFloat(e.target.value) || 0)}
+              onBlur={handleQuantitySave}
+              onKeyDown={handleQuantityKeyDown}
+              autoFocus
+              className="w-16 px-2 py-1 text-sm text-right border border-blue-500 rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
+            />
+          ) : (
+            <p className="text-sm text-gray-600 font-medium">
+              {item.quantity}
+            </p>
           )}
         </div>
       </div>
